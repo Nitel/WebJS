@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="lib/vue.min.js"></script>
+    <script src="lib/lodash.min.js"></script>
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>JS Bin</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Restaurant advisor</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Add</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Remove</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <div id="app">
+        <form v-on:submit="ajouterRestaurant">
+            <label>
+                Nom : <input type="text" name="nom" required v-model="nom">
+            </label>
+            <label>
+                Cuisine : <input type="text" name="cuisine" required v-model="cuisine">
+            </label>
+
+            <button>Ajouter</button>
+        </form>
+        <form v-on:submit="modifierRestaurant">
+            <label>
+                Nom : <input type="text" name="nom" required v-model="nom">
+            </label>
+            <label>
+                Cuisine : <input type="text" name="cuisine" required v-model="cuisine">
+            </label>
+
+            <button>Modifier</button>
+        </form>
+        <p>
+            <label>
+            Recherche :
+            <input type="text"
+                   v-on:input="chercherRestaurants"
+                   v-model="name"
+            >
+        </p>
+<h1>Nombre de restaurants : {{nbRestaurants}}</h1>
+        <table class="table">
+            <tr>
+                <th class="col">Nom</th>
+                <th class="col">Cuisine </th>
+            </tr>
+            <tbody>
+                <tr v-for="r,index in restaurants" v-on:click="supprimerRestaurant(index)" v-bind:style="{backgroundColor:getColor(index)}"
+                    v-bind:class="{bordureRouge:(index === 2)}">
+                    <td>{{r.name}}</td>
+                    <td> {{r.cuisine}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row align-content-center text-center">
+            <button class="col-2 btn" v-on:click="pageFirst">First</button>
+        <button class="col-2 btn" v-on:click="pagePrecedante">{{this.page-1}}</button>
+        <button class="col-2 btn" v-on:click="pageCurrent">{{this.page}}</button>
+        <button class="col-2 btn" v-on:click="pageSuivante">{{this.page+1}}</button>
+            <button class="col-2 btn" v-on:click="pageLast">Last</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
