@@ -48,37 +48,33 @@ function init() {
                 this.restaurants.splice(index, 1);
             },
             modifierRestaurant(event) {
-                // eviter le comportement par defaut
-                event.preventDefault();
 
-                // Récupération du contenu du formulaire pour envoi en AJAX au serveur
-                // 1 - on récupère le formulaire
-                let form = event.target;
+                    event.preventDefault();
 
-                // 2 - on récupère le contenu du formulaire
-                let dataFormulaire = new FormData(form);
+                    let form = event.target;
 
-                // 3 - on envoie une requête POST pour insertion sur le serveur
-                let url = "http://localhost:8080/api/restaurants/" + this.nom;
-                fetch(url, {
-                    method: "POST",
-                    body: dataFormulaire
-                })
-                    .then((reponseJSON) => {
-                        reponseJSON.json()
-                            .then((reponseJS) => {
-                                console.log(reponseJS.msg);
-                                // On re-affiche les restaurants
-                                this.getRestaurantsFromServer();
-                            });
+                    let donneesFormulaire = new FormData(event.target);
+
+                    let id = form._id.value;
+
+                    let url = "/api/restaurants/" + id;
+
+                    fetch(url, {
+                        method: "PUT",
+                        body: donneesFormulaire
                     })
-                    .catch(function (err) {
-                        console.log(err);
-                    });
-
-                this.nom = "";
-                this.cuisine = "";
-            },
+                        .then(function(responseJSON) {
+                            responseJSON.json()
+                                .then(function(res) {
+                                    // Maintenant res est un vrai objet JavaScript
+                                    afficheReponsePUT(res);
+                                });
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+                }
+            ,
             ajouterRestaurant(event) {
                 // eviter le comportement par defaut
                 event.preventDefault();
@@ -108,14 +104,14 @@ function init() {
                     .catch(function (err) {
                         console.log(err);
                     });
-                
+
                 this.nom = "";
                 this.cuisine = "";
             },
             getColor(index) {
                 return (index % 2) ? 'lightBlue' : 'pink';
             },
-            
+
             pageSuivante() {
                 this.page++;
                 this.getRestaurantsFromServer();
